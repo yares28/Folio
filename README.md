@@ -10,28 +10,56 @@ A modern financial data processing and visualization application with a FastAPI 
 
 ## Quick Start
 
-### Backend Setup
+### 🚀 Easy Startup (Recommended)
+
+**For Windows:**
+```cmd
+start.bat
+```
+
+**For macOS/Linux:**
+```bash
+./start.sh
+```
+
+These scripts will automatically:
+- Check for Python 3.8+ and Node.js 18+ 
+- Create virtual environments if needed
+- Install all dependencies
+- Start both backend and frontend servers
+- Display helpful URLs and status
+
+### 📱 Application URLs
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+
+### 🛠️ Manual Setup (Alternative)
+
+#### Backend Setup
 
 1. Navigate to the backend directory:
    ```bash
    cd backend
    ```
 
-2. Install Python dependencies:
+2. Create a virtual environment (recommended):
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Start the FastAPI server:
+4. Start the FastAPI server:
    ```bash
    python start.py
    ```
-   
-   The API will be available at `http://localhost:8000`
-   
-   You can view the interactive API documentation at `http://localhost:8000/docs`
 
-### Frontend Setup
+#### Frontend Setup
 
 1. Navigate to the frontend directory:
    ```bash
@@ -40,15 +68,13 @@ A modern financial data processing and visualization application with a FastAPI 
 
 2. Install Node.js dependencies:
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
-3. Start the development server:
+3. Start the Next.js development server:
    ```bash
    npm run dev
    ```
-   
-   The application will be available at `http://localhost:3000`
 
 ## Usage
 
@@ -150,6 +176,8 @@ Folio/
 │   ├── categories.json      # Category keywords storage
 │   ├── sample_bank_statement.csv    # Sample CSV file
 │   └── sample_transactions.json     # Sample JSON file
+├── start.bat                # Windows startup script
+├── start.sh                 # macOS/Linux startup script
 ├── frontend/
 │   ├── app/                 # Next.js app directory
 │   ├── components/          # React components
