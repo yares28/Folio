@@ -35,7 +35,7 @@ export function FileUploader() {
       
       // Simulate progress
       const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => Math.min(prev + 20, 90))
+        setUploadProgress((prev: number) => Math.min(prev + 20, 90))
       }, 200)
 
       await uploadTransactions(file)
@@ -62,7 +62,7 @@ export function FileUploader() {
   }
 
   const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index))
+    setFiles(files.filter((_: File, i: number) => i !== index))
   }
 
   const resetUploader = () => {
@@ -114,7 +114,7 @@ export function FileUploader() {
             <div className="space-y-2">
               <div className="text-sm font-medium">Selected Files</div>
               <div className="space-y-2">
-                {files.map((file, index) => (
+                {files.map((file: File, index: number) => (
                   <div key={index} className="flex items-center justify-between rounded-md bg-muted p-2">
                     <div className="flex items-center space-x-2">
                       <FileText className="h-4 w-4 text-primary" />
