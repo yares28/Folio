@@ -1,10 +1,12 @@
 export interface Transaction {
   id: string
-  file_id?: string
   date: string
   description: string
   amount: number
   category: string
+  type: "debit" | "credit"
+  currency: string
+  file_id?: string
   created_at?: string
   user_id?: string
 }

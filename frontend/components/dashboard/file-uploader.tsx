@@ -7,8 +7,10 @@ import { Upload, FileText, CheckCircle, AlertCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useData } from "@/contexts/data-context"
 
 export function FileUploader() {
+  const { uploadTransactions, isLoading } = useData()
   const [files, setFiles] = useState<File[]>([])
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle")
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -20,23 +22,31 @@ export function FileUploader() {
     }
   }
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (files.length === 0) return
 
     setUploadStatus("uploading")
     setUploadProgress(0)
+    setErrorMessage("")
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setUploadStatus("success")
-          return 100
-        }
-        return prev + 10
-      })
-    }, 300)
+    try {
+      // For now, we'll only upload the first file since our API handles one file at a time
+      const file = files[0]
+      
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => Math.min(prev + 20, 90))
+      }, 200)
+
+      await uploadTransactions(file)
+      
+      clearInterval(progressInterval)
+      setUploadProgress(100)
+      setUploadStatus("success")
+    } catch (error) {
+      setUploadStatus("error")
+      setErrorMessage(error instanceof Error ? error.message : "Failed to upload file")
+    }
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -77,7 +87,7 @@ export function FileUploader() {
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Drag & drop your files</h3>
               <p className="text-sm text-muted-foreground">
-                Upload CSV or Excel files containing your transaction data
+                Upload CSV, Excel, JSON, or PDF files containing your transaction data
               </p>
             </div>
             <div className="flex gap-2">
@@ -89,8 +99,7 @@ export function FileUploader() {
                   id="file-upload"
                   type="file"
                   className="sr-only"
-                  accept=".csv,.xlsx,.xls"
-                  multiple
+                  accept=".csv,.xlsx,.xls,.json,.pdf"
                   onChange={handleFileChange}
                 />
               </label>
@@ -160,8 +169,10 @@ export function FileUploader() {
       )}
 
       <div className="text-xs text-muted-foreground">
-        <p>Supported file formats: CSV, Excel (.xlsx, .xls)</p>
+        <p>Supported file formats: CSV, Excel (.xlsx, .xls), JSON, PDF</p>
         <p>Maximum file size: 10MB</p>
+        <p>Required columns: Date, Details/Description, Amount</p>
+        <p>Optional columns: Currency, Type/Debit/Credit, Status</p>
       </div>
     </div>
   )
